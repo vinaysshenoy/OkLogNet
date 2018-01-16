@@ -8,11 +8,12 @@ buildscript {
   ext.lib_version_code = 1
   ext.lib_version_name = '0.0.1'
 
-  ext.kotlin_version = '1.2.10'
-  ext.gradle_plugin_version = '3.0.1'
-  ext.support_lib_version = '27.0.2'
   ext.android_maven_plugin_version = '2.0'
+  ext.gradle_plugin_version = '3.0.1'
+  ext.kotlin_version = '1.2.10'
 
+  ext.support_lib_version = '27.0.2'
+  ext.room_version = '1.0.0'
   ext.okhttp_version = '3.9.1'
 
   ext.junit_platform_version = '1.0.0'
