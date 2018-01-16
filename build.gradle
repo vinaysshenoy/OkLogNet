@@ -13,7 +13,10 @@ buildscript {
   ext.support_lib_version = '27.0.2'
   ext.android_maven_plugin_version = '2.0'
 
-  ext.junit_gradle_plugin_version = '1.0.0'
+  ext.okhttp_version = '3.9.1'
+
+  ext.junit_platform_version = '1.0.0'
+  ext.android_junit5_version = '1.0.22'
   ext.spek_version = '1.1.5'
   ext.kluent_version = '1.34'
 
