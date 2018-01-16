@@ -24,6 +24,7 @@ android {
     targetSdkVersion target_sdk
     versionCode lib_version_code
     versionName lib_version_name
+    consumerProguardFiles 'proguard-rules.pro'
   }
 
   buildTypes {
