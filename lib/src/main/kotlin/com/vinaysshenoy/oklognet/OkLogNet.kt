@@ -10,11 +10,13 @@ import okhttp3.Interceptor
  */
 class OkLogNet(context: Context) {
 
-    private val netLogDb = Room.databaseBuilder(context.applicationContext, OkLogNetDb::class.java,
-            "oknetlog.db")
-            .build()
+    private val netLogDb by lazy {
+        Room.databaseBuilder(context.applicationContext, OkLogNetDb::class.java,
+                "oknetlog.db")
+                .build()
+    }
 
-    private val okNetLogDao = netLogDb.netLogDao
+    private val okNetLogDao by lazy { netLogDb.netLogDao }
 
     val interceptor by lazy { OkLogNetInterceptor(okNetLogDao) as Interceptor }
 
