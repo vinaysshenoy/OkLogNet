@@ -7,7 +7,7 @@ import android.arch.persistence.room.PrimaryKey
 /**
  * Created by vinaysshenoy on 16/01/18.
  */
-@Entity
+@Entity(tableName = "OkNetLog_NetLogs")
 internal class NetLogEntity {
 
     @PrimaryKey(autoGenerate = true)
