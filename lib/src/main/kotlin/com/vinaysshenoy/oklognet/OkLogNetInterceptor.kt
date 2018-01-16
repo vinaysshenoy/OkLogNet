@@ -1,5 +1,7 @@
 package com.vinaysshenoy.oklognet
 
+import android.annotation.SuppressLint
+import android.util.Log
 import com.vinaysshenoy.oklognet.db.NetLogDao
 import com.vinaysshenoy.oklognet.db.NetLogEntity
 import okhttp3.FormBody
@@ -18,6 +20,9 @@ import java.util.concurrent.Executors
  * Created by vinaysshenoy on 16/01/18.
  */
 
+private const val LOG_TAG = "OkLogNetInterceptor"
+
+@SuppressLint("LogNotTimber")
 internal class OkLogNetInterceptor(private val netLogDao: NetLogDao) : Interceptor {
 
     private val contentTypesToSave = setOf(
@@ -25,12 +30,11 @@ internal class OkLogNetInterceptor(private val netLogDao: NetLogDao) : Intercept
             "application/x-www-form-urlencoded",
             "application/xml")
 
-    private val writeExecutor = Executors.newSingleThreadExecutor {
-        Thread("oklognet-write-thread")
-    }
+    private val writeExecutor = Executors.newSingleThreadExecutor()
 
     override fun intercept(chain: Chain): Response {
 
+        Log.d(LOG_TAG, "Intercept!")
         val requestTime = System.currentTimeMillis()
 
         val request = chain.request()
@@ -64,7 +68,9 @@ internal class OkLogNetInterceptor(private val netLogDao: NetLogDao) : Intercept
     private fun save(requestTime: Long, url: String, method: String, requestHeaders: String,
             requestBody: String, responseCode: Int, responseHeaders: String, responseBody: String,
             duration: Long) {
-        writeExecutor.submit {
+        Log.d(LOG_TAG, "SAVE")
+        writeExecutor.execute {
+            Log.d(LOG_TAG, "SAVE 2")
             val netLogEntity = NetLogEntity().apply {
                 this.requestTime = requestTime
                 this.url = url
@@ -76,7 +82,9 @@ internal class OkLogNetInterceptor(private val netLogDao: NetLogDao) : Intercept
                 this.responseBody = responseBody
                 this.duration = duration
             }
+            Log.d(LOG_TAG, "SAVING")
             netLogDao.put(netLogEntity)
+            Log.d(LOG_TAG, "SAVED")
         }
     }
 
@@ -144,7 +152,7 @@ internal class OkLogNetInterceptor(private val netLogDao: NetLogDao) : Intercept
                 else -> "OkNetLog: No Content Type"
             }
 
-        } ?: "OkNetLog: No Body Present"
+        } ?: ""
     }
 
     private fun convertRequestBodyToString(requestBody: RequestBody, contentType: String) =
